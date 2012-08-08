@@ -3,7 +3,7 @@ import re
 import rrdtool
 
 class Plugin(object):
-    def __init__(self, data_dir, dst_dir, size=(600, 250)):
+    def __init__(self, data_dir, dst_dir, size=(400, 120)):
         """
             Basic class for plugin_directory
 
