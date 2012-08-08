@@ -1,3 +1,3 @@
 from plugins.interface import Interface
 
-i = Interface("/var/lib/collectd/rrd/web/", "/var/www/graphs/")
+i = Interface("/home/cx/point/rrd/web/", "/home/cx/tmp/")

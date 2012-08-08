@@ -1,10 +1,22 @@
 class Plugin(object):
-    def __init__(self, data_dir, dst_dir):
+    def __init__(self, data_dir, dst_dir, size=(800, 350)):
         self.data_dir = data_dir
         self.dst_dir = dst_dir
         self.filenames = {}
+        self.site = size
 
-    def convert(self, parms, path):
+    def time_ranges(self):
+        return (
+            ("day", "-1d"),
+            ("week", "-1w"),
+            ("month", "-4w"),
+            ("three-months", "-12w"),
+            ("six-months", "-24w"),
+            ("year", "-1y"),
+        )
+
+
+    def convert(self, parms, path, end):
         """Convert variables in parameters
         """
         def convert_map(parm):
@@ -23,5 +35,6 @@ class Plugin(object):
             parm = parm.replace("$HalfYellow", "F3DFB7")
             parm = parm.replace("$HalfCyan", "B7DFF7")
             parm = parm.replace("$HalfMagenta", "DFB7F7")
+            parm = parm.replace("{START}", end)
             return parm
         return map(convert_map, parms)

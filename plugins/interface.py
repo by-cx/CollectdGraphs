@@ -15,13 +15,21 @@ class Interface(Plugin):
             if s:
                 datetype, interface = s.groups()
                 if datetype == "packets":
-                    dst_path = os.path.join(self.dst_dir, "%s.png" % filename[:-4])
-                    self.graph_if_packets(os.path.join(data_dir, filename), dst_path)
+                    dst_path = os.path.join(
+                        self.dst_dir,
+                        "interface",
+                        filename[:-4] + "-%s.png",
+                    )
+                    self.graph_if_packets(
+                        os.path.join(data_dir, filename),
+                        dst_path,
+                    )
 
             #if_errors-eth0.rrd  if_octets-eth0.rrd  if_packets-eth0.rrd
 
     def graph_if_packets(self, rrd_path, dst_path):
         parms = [
+            '--start','{START}', '--end', '-1',
             '-v', 'Packets/s', '--units=si',
             'DEF:tx_min={file}:tx:MIN',
             'DEF:tx_avg={file}:tx:AVERAGE',
@@ -52,7 +60,8 @@ class Interface(Plugin):
             'GPRINT:rx_avg:LAST:%5.1lf%s Last',
             'GPRINT:rx_avg_sum:LAST:(ca. %4.0lf%s Total)\l',
         ]
-        rrdtool.graph(dst_path, self.convert(parms, rrd_path))
+        for name, time_range in self.time_ranges():
+            rrdtool.graph(dst_path % name, self.convert(parms, rrd_path, time_range))
 
 
         
