@@ -13,10 +13,6 @@ class Plugin(object):
         """
         self._data_dir = data_dir
         self._dst_dir = dst_dir
-<<<<<<< HEAD
-        self.filenames = {}
-=======
->>>>>>> df85fdb4e320c9d483b022f05c78defbded075e0
         self.size = size
 
     @property
