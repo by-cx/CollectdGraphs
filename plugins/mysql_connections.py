@@ -19,9 +19,9 @@ class MysqlConnections(Plugin):
             'DEF:connections_max={file}:value:MAX',
             'DEF:connections_avg={file}:value:AVERAGE',
             'DEF:connections_min={file}:value:MIN',
-            'LINE1:connection_max#$FullRed:Connections Max',
+            'LINE1:connections_max#$FullRed:Connections Max',
             'AREA:connections_avg#$HalfYellow:Connections Avg',
-            'LINE1:connection_min#$FullBlue:Connections Min',
+            'LINE1:connections_min#$FullBlue:Connections Min',
         ]
         self.gen_graph(parms, *args)
         
