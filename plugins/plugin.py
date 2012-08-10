@@ -21,7 +21,7 @@ class Plugin(object):
 
     @property
     def dst_dir(self):
-        directory = os.path.join(self._dst_dir, self.plugin_directory)
+        directory = os.path.join(self._dst_dir, self.dst_name)
         if not os.path.isdir(directory):
             os.makedirs(directory)
         return directory
@@ -82,8 +82,66 @@ class Plugin(object):
             '--width','{x}', '--height', '{y}',
         ]
         for name, time_range in self.time_ranges():
+            #print graph_path % name, type(graph_path % name)
+            #print self.convert(parms_common + parms, rrd_path, time_range)
             rrdtool.graph(
-                graph_path % name,
-                self.convert(parms_common + parms, rrd_path, time_range)
+               graph_path % name,
+               self.convert(parms_common + parms, rrd_path, time_range)
             )
 
+class MetaPlugin(Plugin):
+    def __init__(self, data_dir, dst_dir, size=(400, 120)):
+        self._data_dir = data_dir
+        self._dst_dir = dst_dir
+        self.size = size
+        self.gen()
+
+    @property
+    def data_dir(self):
+        return self._data_dir
+
+    @property
+    def dst_dir(self):
+        directory = os.path.join(self._dst_dir, self.dst_name)
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+        return directory
+
+    def gen(self, filename_match):
+        self.graph_meta(self.dst_name + "-%s.png")
+
+    def graph_meta(self, values, *args):
+        """
+            render meta graph
+
+            values is list/tuple with this format of tuples:
+            ('name', 'color', 'rrd_path', 'value')
+        """
+        parms = []
+
+        for name, color, rrd, value in values:
+            parms.append('DEF:%s_min=%s:%s:AVERAGE' % (name, os.path.join(self.data_dir, self.plugin_directory, rrd), value))
+            parms.append('DEF:%s_avg=%s:%s:AVERAGE' % (name, os.path.join(self.data_dir, self.plugin_directory, rrd), value))
+            parms.append('DEF:%s_max=%s:%s:AVERAGE' % (name, os.path.join(self.data_dir, self.plugin_directory, rrd), value))
+
+        last_value = ""
+        for name, color, rrd, value in values:
+            if last_value:
+                parms.append('CDEF:%s_up=%s_avg,%s_up,+' % (name, name, last_value))
+            else:
+                parms.append('CDEF:%s_up=%s_avg' % (name, name))
+            last_value = name
+        if last_value:
+            parms.append('VDEF:%s_hrule=%s_up,MAXIMUM' % (last_value, last_value))
+            parms.append("HRULE:%s_hrule#$FullGreen" % last_value)
+        for name, color, rrd, value in values[::-1]:
+            parms.append("AREA:%s_up#%s" % (name, color))
+            parms.append("LINE1:%s_up#%s:%s" % (name, color, name.ljust(15)))
+            parms.append(
+                'GPRINT:{name}_avg:MIN:%5.1lf%s Min,'.replace('{name}', name)
+            )
+            parms.append('GPRINT:{name}_max:AVERAGE:%5.1lf%s Avg,'.replace('{name}', name))
+            parms.append('GPRINT:{name}_avg:MAX:%5.1lf%s Max\l'.replace('{name}', name))
+            
+        self.gen_graph(parms, "", *args)
+        

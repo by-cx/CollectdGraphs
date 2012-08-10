@@ -3,6 +3,7 @@ from plugin import Plugin
 
 class Interface(Plugin):
     plugin_directory = "interface"
+    dst_name = "interface"
 
     def __init__(self, *args, **kwargs):
         super(Interface, self).__init__(*args, **kwargs)
@@ -86,7 +87,7 @@ class Interface(Plugin):
         ]
         self.gen_graph(parms, *args)
 
-    def graph_if_errors(self):
+    def graph_if_errors(self, *args):
         parms = [
             '-v', 'Errors/s', '--units=si',
             'DEF:tx_min={file}:tx:MIN',
