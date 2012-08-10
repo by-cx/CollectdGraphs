@@ -1,5 +1,3 @@
-import os
-import re
 from plugin import MetaPlugin
 
 class CPU(MetaPlugin):
@@ -18,4 +16,3 @@ class CPU(MetaPlugin):
             ('steal', '000000', 'cpu-steal.rrd'),
         )
         return super(CPU, self).graph_meta(values, *args)
-        
