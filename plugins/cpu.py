@@ -30,7 +30,7 @@ class CPU(Plugin):
             ('system', 'ff0000', 'cpu-system.rrd'),
             ('softirq', 'ff00ff', 'cpu-softirq.rrd'),
             ('interrupt', 'a000a0', 'cpu-interrupt.rrd'),
-            #('steal', '000000', 'cpu-steal.rrd'),
+            ('steal', '000000', 'cpu-steal.rrd'),
         )
         parms = []
 
@@ -51,7 +51,7 @@ class CPU(Plugin):
         for name, color, rrd in values[::-1]:
             parms.append("AREA:%s_up#%s" % (name, color))
         for name, color, rrd in values:
-            parms.append('GPRINT:{name}_avg:MIN:{name} %5.1lf%s Min,'.replace('{name}', name))
+            parms.append('GPRINT:{name}_avg:MIN:{name_format} %5.1lf%s Min,'.replace('{name}', name).replace('{name_format}', name.ljust(15)))
             parms.append('GPRINT:{name}_max:AVERAGE:%5.1lf%s Avg,'.replace('{name}', name))
             parms.append('GPRINT:{name}_avg:MAX:%5.1lf%s Max\l'.replace('{name}', name))
         self.gen_graph(parms, *args)
