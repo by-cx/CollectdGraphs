@@ -48,7 +48,7 @@ class CPU(Plugin):
             last_value = name
         if last_value:
             parms.append("LINE1:%s_up#$FullGreen:Load" % last_value)
-        for name, color, rrd in values:
+        for name, color, rrd in values[::-1]:
             parms.append("AREA:%s_up#%s" % (name, color))
         for name, color, rrd in values:
             parms.append('GPRINT:{name}_avg:MIN:{name} %5.1lf%s Min,'.replace('{name}', name))

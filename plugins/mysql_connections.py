@@ -22,6 +22,9 @@ class MysqlConnections(Plugin):
             'LINE1:connections_max#$FullRed:Connections Max',
             'AREA:connections_avg#$HalfYellow:Connections Avg',
             'LINE1:connections_min#$FullBlue:Connections Min',
+            'GPRINT:connections_avg:MIN:Connections %5.1lf%s Min ',
+            'GPRINT:connections_max:AVERAGE:%5.1lf%s Avg ',
+            'GPRINT:connections_avg:MAX:%5.1lf%s Max\l',
         ]
         self.gen_graph(parms, *args)
         
