@@ -1,8 +1,14 @@
+import os
+import re
 from plugin import MetaPlugin
 
 class CPU(MetaPlugin):
     def gen(self):
-        super(CPU, self).gen("cpu-[0-9]{1,3}")
+        for filename in os.listdir(self._data_dir):
+            if re.match("cpu-[0-9]{1,3}", filename):
+                self.plugin_directory = filename
+                self.name = filename
+                self.graph_meta(self.name + "-%s.png")
 
     def graph_meta(self, *args):
         values = (
