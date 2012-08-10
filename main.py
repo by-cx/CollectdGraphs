@@ -12,6 +12,7 @@ for machine in os.listdir(data_dir):
 		os.path.join(graphs_dir, machine),
 	)
 	cpu = CPU(
+        "cpu",
 		os.path.join(data_dir, machine),
 		os.path.join(graphs_dir, machine),
 	)

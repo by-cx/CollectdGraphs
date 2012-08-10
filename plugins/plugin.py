@@ -110,7 +110,7 @@ class MetaPlugin(Plugin):
         for filename in os.listdir(self._data_dir):
             if re.match(filename_match, filename):
                 self.plugin_directory = filename
-                self.graph_meta("", self.plugin_directory + "-%s.png")
+                self.graph_meta(self.plugin_directory + "-%s.png")
 
     def graph_meta(self, values, *args):
         """
