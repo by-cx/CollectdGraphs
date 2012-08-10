@@ -87,3 +87,61 @@ class Plugin(object):
                 self.convert(parms_common + parms, rrd_path, time_range)
             )
 
+class MetaPlugin(Plugin):
+    def __init__(self, name, data_dir, dst_dir, size=(400, 120)):
+        self.name = name
+        self._data_dir = data_dir
+        self._dst_dir = dst_dir
+        self.size = size
+        self.gen()
+
+    @property
+    def data_dir(self):
+        return self._data_dir
+
+    @property
+    def dst_dir(self):
+        directory = os.path.join(self._dst_dir, self.name)
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+        return directory
+
+    def gen(self, filename_match):
+        for filename in os.listdir(self._data_dir):
+            if re.match(filename_match, filename):
+                self.plugin_directory = filename
+                self.graph_meta("", self.plugin_directory + "-%s.png")
+
+    def graph_meta(self, values, *args):
+        """
+            render meta graph
+
+            values is list/tuple with this format of tuples:
+            ('name', 'color', 'rrd_path')
+        """
+        parms = []
+
+        for name, color, rrd in values:
+            parms.append('DEF:%s_min=%s:value:AVERAGE' % (name, os.path.join(self.data_dir, rrd)))
+            parms.append('DEF:%s_avg=%s:value:AVERAGE' % (name, os.path.join(self.data_dir, rrd)))
+            parms.append('DEF:%s_max=%s:value:AVERAGE' % (name, os.path.join(self.data_dir, rrd)))
+
+        last_value = ""
+        for name, color, rrd in values:
+            if last_value:
+                parms.append('CDEF:%s_up=%s_avg,%s_up,+' % (name, name, last_value))
+            else:
+                parms.append('CDEF:%s_up=%s_avg' % (name, name))
+            last_value = name
+        if last_value:
+            parms.append("LINE1:%s_up#$FullGreen:Load" % last_value)
+        for name, color, rrd in values[::-1]:
+            parms.append("AREA:%s_up#%s" % (name, color))
+        for name, color, rrd in values:
+            parms.append(
+                'GPRINT:{name}_avg:MIN:{name_format} %5.1lf%s Min,'.replace('{name}', name).replace('{name_format}', name.ljust(15))
+            )
+            parms.append('GPRINT:{name}_max:AVERAGE:%5.1lf%s Avg,'.replace('{name}', name))
+            parms.append('GPRINT:{name}_avg:MAX:%5.1lf%s Max\l'.replace('{name}', name))
+        self.gen_graph(parms, "", *args)
+        
