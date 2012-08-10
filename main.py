@@ -1,5 +1,6 @@
 import os
 from plugins.interface import Interface
+from plugins.load import Load
 from plugins.cpu import CPU
 from plugins.mysql_connections import MysqlConnections
 
@@ -7,7 +8,11 @@ data_dir = "/var/lib/collectd/rrd/"
 graphs_dir = "/var/www/graphs/"
 
 for machine in os.listdir(data_dir):
-	i = Interface(
+	Load(
+		os.path.join(data_dir, machine),
+		os.path.join(graphs_dir, machine),
+	)
+	Interface(
 		os.path.join(data_dir, machine),
 		os.path.join(graphs_dir, machine),
 	)
