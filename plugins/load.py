@@ -4,10 +4,6 @@ class Load(Plugin):
     plugin_directory = "load"
     dst_name = "load"
 
-    def __init__(self, *args, **kwargs):
-        super(Load, self).__init__(*args, **kwargs)
-        self.gen()
-
     def gen(self):
         self.gen_graph("%s.rrd" % self.plugin_directory, self.plugin_directory + "-%s.png")
 

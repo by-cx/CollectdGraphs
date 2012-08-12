@@ -1,8 +1,10 @@
 import os
 import re
-from plugin import MetaPlugin
+from plugin import MetaPluginSum
 
-class CPU(MetaPlugin):
+class CPU(MetaPluginSum):
+    plugin_directory = "cpu-[0-9]{1,3}"
+
     def gen(self):
         for filename in os.listdir(self._data_dir):
             if re.match("cpu-[0-9]{1,3}", filename):
@@ -19,6 +21,6 @@ class CPU(MetaPlugin):
             ('softirq', 'ff00ff', 'cpu-softirq.rrd', "value"),
             ('interrupt', 'a000a0', 'cpu-interrupt.rrd', "value"),
             ('steal', '000000', 'cpu-steal.rrd', "value"),
-            #('idle', 'ffffff', 'cpu-idle.rrd', "value"),
+            ('idle', 'ffffff', 'cpu-idle.rrd', "value"),
         )
         return super(CPU, self).graph_meta(values, *args)

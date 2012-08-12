@@ -3,11 +3,8 @@ import re
 from plugin import Plugin
 
 class Disk(Plugin):
+    plugin_directory = "disk-[a-z0-9]{3,6}"
     dst_name = "disk"
-
-    def __init__(self, *args, **kwargs):
-        super(Disk, self).__init__(*args, **kwargs)
-        self.gen()
 
     def gen(self):
         for filename in os.listdir(self._data_dir):

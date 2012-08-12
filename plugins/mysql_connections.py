@@ -5,10 +5,6 @@ class MysqlConnections(Plugin):
     plugin_directory = "dbi-lotofideasql"
     dst_name = "dbi-lotofideasql"
 
-    def __init__(self, *args, **kwargs):
-        super(MysqlConnections, self).__init__(*args, **kwargs)
-        self.gen()
-
     def gen(self):
         source = "gauge-customer-connections.rrd"
         dst = "mysql-connections-%s.png"

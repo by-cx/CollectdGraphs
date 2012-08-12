@@ -5,10 +5,6 @@ class Interface(Plugin):
     plugin_directory = "interface"
     dst_name = "interface"
 
-    def __init__(self, *args, **kwargs):
-        super(Interface, self).__init__(*args, **kwargs)
-        self.gen()
-
     def gen(self):
         for splited, source, dst in self.scan_for_files():
             if splited[0] == "if_packets":

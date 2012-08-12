@@ -1,6 +1,6 @@
-from plugin import MetaPlugin
+from plugin import MetaPluginSum
 
-class Memory(MetaPlugin):
+class Memory(MetaPluginSum):
     plugin_directory = "memory"
     dst_name = "memory"
 
