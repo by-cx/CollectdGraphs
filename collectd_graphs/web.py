@@ -6,8 +6,6 @@ from os.path import join, abspath, pardir, dirname
 ROOT = abspath(join(dirname(__file__), pardir, "collectd_graphs", "views"))
 TEMPLATE_PATH.append(ROOT)
 
-print TEMPLATE_PATH
-
 @route('/')
 def index(name=''):
     graphs = gen_graphs()
