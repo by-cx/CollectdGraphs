@@ -1,2 +1,6 @@
 *.pyc
 *.pyo
+build/
+collectd_graphs.egg-info/
+dist/
+

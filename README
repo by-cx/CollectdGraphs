@@ -1,0 +1,88 @@
+Collectd statistics frontend
+============================
+
+I wasn't satisfied with existing Collectd frontends, so I make my own. Definitions of graphs are from Collection 4 project and I add a few of my own lines. Rest is my own python core with web interface based on bottle and jQuery mobile.
+
+My goals:
+
+* Simple solution in Python
+* Framework for new plugins (new plugin in one minute, meta plugins and simple plugins)
+* Not much of configuration
+
+Config
+------
+
+You can save your configuration in /etc/collectd/graphs.json. Use something like this:
+
+    config = {
+        "data_dir": "/var/lib/collectd/rrd/",
+        "graphs_dir": "/var/www/graphs/",
+    }
+
+This is defaul configuration.
+
+Instalation and webinterface
+----------------------------
+
+Web interface is based on jQuery Mobile.
+
+    $ python setup.py install
+    $ collectd_graphs localhost:8080
+
+During loading a web interface are regenerate all graphs and it could be little slow. Be patient. I will solve this problem very soon.
+
+Example of simple plugin
+------------------------
+
+If you want new plugin, just fork this repo and add a new one into plugins directory. After you created your new plugin, remember add it into __init__.py.
+
+    from plugin import Plugin
+
+    class Load(Plugin):
+        # plugin directory (what collectd create))
+        plugin_directory = "load"
+        # destination name (in graphs directory)
+        dst_name = "load"
+
+        def gen(self):
+            self.gen_graph("%s.rrd" % self.plugin_directory, self.plugin_directory + "-%s.png")
+
+        def gen_graph(self, *args):
+            parms = [
+                '-v', 'System load',
+                'DEF:s_avg={file}:shortterm:AVERAGE',
+                'DEF:s_min={file}:shortterm:MIN',
+                [.....]
+                'GPRINT:l_avg:LAST:%4.2lf Last',
+            ]
+            super(Load, self).gen_graph(parms, *args)
+
+Example of meta plugin (more rrd databases)
+-------------------------------------------
+
+    import os
+    import re
+    from plugin import MetaPluginSum
+
+    class CPU(MetaPluginSum):
+        plugin_directory = "cpu-[0-9]{1,3}"
+        dst_name = "cpu"
+
+        def gen(self):
+            for filename in os.listdir(self._data_dir):
+                if re.match("cpu-[0-9]{1,3}", filename):
+                    self.plugin_directory = filename
+                    self.graph_meta(filename + "-%s.png")
+
+        def graph_meta(self, *args):
+            values = (
+                ('nice', '00e000', 'cpu-nice.rrd', "value"),
+                ('user', '0000ff', 'cpu-user.rrd', "value"),
+                ('wait', 'ffb000', 'cpu-wait.rrd', "value"),
+                ('system', 'ff0000', 'cpu-system.rrd', "value"),
+                ('softirq', 'ff00ff', 'cpu-softirq.rrd', "value"),
+                ('interrupt', 'a000a0', 'cpu-interrupt.rrd', "value"),
+                ('steal', '000000', 'cpu-steal.rrd', "value"),
+                ('idle', 'ffffff', 'cpu-idle.rrd', "value"),
+            )
+            return super(CPU, self).graph_meta(values, *args)
