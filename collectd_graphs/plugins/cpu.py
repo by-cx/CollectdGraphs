@@ -4,12 +4,12 @@ from plugin import MetaPluginSum
 
 class CPU(MetaPluginSum):
     plugin_directory = "cpu-[0-9]{1,3}"
+    dst_name = "cpu"
 
     def gen(self):
         for filename in os.listdir(self._data_dir):
             if re.match("cpu-[0-9]{1,3}", filename):
                 self.plugin_directory = filename
-                self.dst_name = "cpu"
                 self.graph_meta(filename + "-%s.png")
 
     def graph_meta(self, *args):

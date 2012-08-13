@@ -14,6 +14,7 @@ class Plugin(object):
         self._data_dir = data_dir
         self._dst_dir = dst_dir
         self.size = size
+        self.graphs = []
         #self.gen() # must be definen in derived class
 
     @property
@@ -89,6 +90,7 @@ class Plugin(object):
                graph_path % name,
                self.convert(parms_common + parms, rrd_path, time_range)
             )
+            self.graphs.append(dst % name)
 
 class MetaPluginSum(Plugin):
     def gen(self):
