@@ -1,6 +1,4 @@
 import os
-from glob import glob
-import sys
 from setuptools import setup, find_packages
 
 def read(fname):
@@ -22,7 +20,9 @@ setup(
         "Topic :: Utilities",
         "License :: OSI Approved :: BSD License",
     ],
-    #data_files=["views", glob("views/*")],
+    data_files=[
+        ("collectd_graphs/views", ("collectd_graphs/views/home.tpl", ), ),
+    ],
     install_requires=[
         #"termcolor",
     ],
