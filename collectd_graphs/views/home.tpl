@@ -14,6 +14,7 @@
     <div data-role="page" id="home"> 
         <div data-role="header">
             <h1>Collectd statictics</h1>
+            <a href="/all" data-role="button">Regenerate all graphs</a>
         </div>
         
         <div data-role="content">
@@ -30,39 +31,20 @@
         <div data-role="header">
             <a href="#home" data-role="button">Home</a>
             <h1>Plugins on {{ machine }}</h1>
+            <a href="/all" data-role="button">Regenerate all graphs</a>
         </div>
         <div data-role="content">
         <h2>Plugins on {{ machine }}</h2>
             %for plugin in data[machine]:
-                %if data[machine][plugin]["day"]:
                 <strong>{{ plugin }}</strong><br>
                 <div data-role="controlgroup" data-type="horizontal">
                 %for time in ("day", "week", "month", "three-months", "six-months", "year"):
-                    <a href="#{{ machine }}-{{ plugin }}-{{ time }}" data-role="button">{{ time }}</a>
+                    <a href="/plugin/{{ machine }}/{{ plugin }}/{{ time }}" data-role="button">{{ time }}</a>
                 %end
                 </div>
-                %end
             %end
         </div> 
     </div> 
-    %end
-
-    %for machine in data:
-    %for plugin in data[machine]:
-    %for time in data[machine][plugin]:
-    <div data-role="page" id="{{ machine }}-{{ plugin }}-{{ time }}"> 
-        <div data-role="header">
-            <a href="#{{ machine }}" data-role="button">Plugins list</a>
-            <h1>{{ plugin }} on {{ machine }}</h1>
-        </div>
-        <div data-role="content">
-        %for graph in data[machine][plugin][time]:
-            <p><strong>{{ graph }}</strong></p>
-            <p><img src="/static/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
-        %end
-        </div> 
-    </div> 
-    %end
     %end
     
 </body>

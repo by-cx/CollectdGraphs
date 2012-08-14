@@ -18,12 +18,22 @@ if config_for_update:
 for cfg in config: config[cfg] = str(config[cfg])
 
 
-def gen_graphs(plugin=""):
+def get_plugins_list():
+    data = {}
+    for machine in os.listdir(config["graphs_dir"]):
+        data[machine] = []
+        for plugin in os.listdir(os.path.join(config["graphs_dir"], machine)):
+            data[machine].append(plugin)
+    return data
+
+def gen_graphs(fmachine="", fplugin=""):
     data = {}
     for machine in os.listdir(config["data_dir"]):
+        if fmachine and fmachine != machine: continue
         data[machine] = {}
         for Plugin in plugins.plugins_list:
-            data[machine][Plugin.dst_name] = {"day": [], "week": [], "month": [], "three-months": [], "six-months": [], "year": []}
+            if fplugin and fplugin != Plugin.dst_name: continue
+            if not Plugin.dst_name in data[machine]: data[machine][Plugin.dst_name] = {"day": [], "week": [], "month": [], "three-months": [], "six-months": [], "year": []}
             for path in os.listdir(os.path.join(config["data_dir"], machine)):
                 if re.match("^%s$" % Plugin.plugin_directory, path):
                     plugin = Plugin(
