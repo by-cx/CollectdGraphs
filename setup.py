@@ -21,7 +21,7 @@ setup(
         "License :: OSI Approved :: BSD License",
     ],
     data_files=[
-        ("collectd_graphs/views", ("collectd_graphs/views/home.tpl", ), ),
+        ("collectd_graphs/views", ("collectd_graphs/views/home.tpl", "collectd_graphs/views/plugin.tpl"), ),
     ],
     install_requires=[
         #"termcolor",
