@@ -10,6 +10,7 @@ from processes import ForkRate
 from swap import Swap
 from swap import SwapIO
 from users import Users
+from snmp import Snmp
 
 plugins_list = (
     CPU,
@@ -24,4 +25,5 @@ plugins_list = (
     Swap,
     SwapIO,
     Users,
+    Snmp,
 )

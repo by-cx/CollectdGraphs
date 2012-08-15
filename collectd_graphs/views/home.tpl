@@ -23,7 +23,7 @@
             <p><a href="#{{ x }}" data-role="button">{{ x }}</a></p>
             %end
         </div> 
-        <div data-role="footer">Developed for BEST-HOSTING - <a href="http://best-hosting.cz">http://best-hosting.cz</a></div> 
+        <div data-role="footer"><h2>Developed for BEST-HOSTING - <a href="http://best-hosting.cz">http://best-hosting.cz</a></h2></div> 
     </div> 
 
     %for machine in data:
