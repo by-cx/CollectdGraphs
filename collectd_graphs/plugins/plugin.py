@@ -1,20 +1,24 @@
 import os
 import re
 import rrdtool
+import tempfile
 
 class Plugin(object):
-    def __init__(self, data_dir, dst_dir, size=(400, 120)):
+    def __init__(self, data_dir, dst_dir, size=(400, 120), tmp=False):
         """
             Basic class for plugin_directory
 
             data_dir - directory with rrd databases
             dst_dir - directory for graphs
             size - (x, y) tuple with size of graphs
+            tmp - gen_graph() save image data into images atribut
         """
         self._data_dir = data_dir
         self._dst_dir = dst_dir
         self.size = size
+        self.tmp = tmp
         self.graphs = []
+        self.images = {}
         #self.gen() # must be definen in derived class
 
     @property
@@ -84,13 +88,22 @@ class Plugin(object):
             '--width','{x}', '--height', '{y}',
         ]
         for name, time_range in self.time_ranges():
-            #print graph_path % name, type(graph_path % name)
-            #print self.convert(parms_common + parms, rrd_path, time_range)
-            rrdtool.graph(
-               graph_path % name,
-               self.convert(parms_common + parms, rrd_path, time_range)
-            )
-            self.graphs.append(dst % name)
+            if not self.tmp:
+                rrdtool.graph(
+                   graph_path % name,
+                   self.convert(parms_common + parms, rrd_path, time_range)
+                )
+                self.graphs.append(dst % name)
+            else:
+                f = tempfile.NamedTemporaryFile()
+                rrdtool.graph(
+                   f.name,
+                   self.convert(parms_common + parms, rrd_path, time_range)
+                )
+                self.images[os.path.basename(graph_path % name)] = f.read()
+                f.close()
+                self.graphs.append(dst % name)
+
 
 class MetaPluginSum(Plugin):
     def gen(self):

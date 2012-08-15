@@ -14,7 +14,7 @@
     <div data-role="page" id="home"> 
         <div data-role="header">
             <h1>Collectd statictics</h1>
-            <a href="/all" data-role="button">Regenerate all graphs</a>
+            <a href="/all" data-role="button" rel="external">Regenerate all graphs</a>
         </div>
         
         <div data-role="content">
@@ -23,7 +23,7 @@
             <p><a href="#{{ x }}" data-role="button">{{ x }}</a></p>
             %end
         </div> 
-        <div data-role="footer"><h2>Developed for BEST-HOSTING - <a href="http://best-hosting.cz">http://best-hosting.cz</a></h2></div> 
+        <div data-role="footer"><h2>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h2></div> 
     </div> 
 
     %for machine in data:
@@ -31,7 +31,7 @@
         <div data-role="header">
             <a href="#home" data-role="button">Home</a>
             <h1>Plugins on {{ machine }}</h1>
-            <a href="/all" data-role="button">Regenerate all graphs</a>
+            <a href="/all" data-role="button" rel="external">Regenerate all graphs</a>
         </div>
         <div data-role="content">
         <h2>Plugins on {{ machine }}</h2>
@@ -44,6 +44,7 @@
                 </div>
             %end
         </div> 
+        <div data-role="footer"><h2>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h2></div> 
     </div> 
     %end
     

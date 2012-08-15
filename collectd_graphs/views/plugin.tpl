@@ -15,7 +15,7 @@
         <div data-role="header">
             <a href="/#{{ machine }}" data-role="button">Plugins list</a>
             <h1>{{ plugin }} on {{ machine }}</h1>
-            <a href="/all" data-role="button">Regenerate all graphs</a>
+            <a href="/all" data-role="button" rel="external">Regenerate all graphs</a>
         </div>
         <div data-role="content">
         %for graph in data:
@@ -27,7 +27,8 @@
                 </div>
             <p><img src="/static/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
         %end
-        </div> 
+        </div>
+        <div data-role="footer"><h2>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h2></div> 
     </div> 
 
 </body>

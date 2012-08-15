@@ -26,6 +26,19 @@ def get_plugins_list():
             data[machine].append(plugin)
     return data
 
+def tmp_graph(machine, plugin_name, x, y, filename):
+    for Plugin in plugins.plugins_list:
+        if Plugin.dst_name == plugin_name:
+            plugin = Plugin(
+                os.path.join(config["data_dir"], machine),
+                os.path.join(config["graphs_dir"], machine),
+                (x, y),
+                True
+            )
+            plugin.gen()
+            print plugin.images.keys()
+            return plugin.images[filename]
+
 def gen_graphs(fmachine="", fplugin=""):
     data = {}
     for machine in os.listdir(config["data_dir"]):

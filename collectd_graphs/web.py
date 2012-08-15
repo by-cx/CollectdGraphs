@@ -1,6 +1,6 @@
-from bottle import route, run, template, static_file, TEMPLATE_PATH, redirect
+from bottle import route, run, template, static_file, TEMPLATE_PATH, redirect, response
 
-from main import gen_graphs, config, get_plugins_list
+from main import gen_graphs, config, get_plugins_list, tmp_graph
 import sys
 
 from os.path import join, abspath, pardir, dirname
@@ -11,6 +11,11 @@ TEMPLATE_PATH.append(ROOT)
 def index(name=''):
     graphs = get_plugins_list()
     return template('home', data=graphs)
+
+@route('/plugin_tmp/:machine/:plugin/:x/:y/:filename')
+def plugin_tmp(machine, plugin, x, y, filename):
+    response.content_type = "image/png"
+    return tmp_graph(machine, plugin, int(x), int(y), filename)
 
 @route('/plugin/:machine/:plugin/:time')
 def plugin(machine, plugin, time):
