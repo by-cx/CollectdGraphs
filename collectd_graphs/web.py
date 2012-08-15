@@ -12,6 +12,7 @@ def index(name=''):
     graphs = get_plugins_list()
     return template('home', data=graphs)
 
+# for example: http://localhost:8080/plugin_tmp/web/load/600/120/load-day.png
 @route('/plugin_tmp/:machine/:plugin/:x/:y/:filename')
 def plugin_tmp(machine, plugin, x, y, filename):
     response.content_type = "image/png"
