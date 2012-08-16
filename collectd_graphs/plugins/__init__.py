@@ -11,6 +11,7 @@ from swap import Swap
 from swap import SwapIO
 from users import Users
 from snmp import Snmp
+from dns import DNS
 
 plugins_list = (
     CPU,
@@ -26,4 +27,5 @@ plugins_list = (
     SwapIO,
     Users,
     Snmp,
+    DNS,
 )
