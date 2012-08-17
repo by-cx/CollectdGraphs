@@ -20,10 +20,10 @@
         <div data-role="content">
         %for graph in data:
             <p><strong>{{ graph }}</strong></p>
+            %for time in ("day", "week", "month", "three-months", "six-months", "year"):
+                <a href="/plugin/{{ machine }}/{{ plugin }}/{{ time }}" data-role="button">{{ time }}</a>
+            %end
             <div data-role="controlgroup" data-type="horizontal">
-                %for time in ("day", "week", "month", "three-months", "six-months", "year"):
-                    <a href="/plugin/{{ machine }}/{{ plugin }}/{{ time }}" data-role="button">{{ time }}</a>
-                %end
                 </div>
             <p><img src="/static/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
         %end

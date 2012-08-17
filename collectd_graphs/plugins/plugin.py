@@ -104,7 +104,6 @@ class Plugin(object):
                 f.close()
                 self.graphs.append(dst % name)
 
-
 class MetaPluginSum(Plugin):
     def gen(self):
         self.graph_meta(self.dst_name + "-%s.png")
