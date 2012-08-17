@@ -62,3 +62,6 @@ def gen_graphs(fmachine="", fplugin=""):
                                     break
                     break
     return data
+
+if __name__ == "__main__":
+    gen_graphs()

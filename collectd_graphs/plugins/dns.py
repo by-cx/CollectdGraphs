@@ -5,7 +5,7 @@ class DNS(MetaPluginSum):
     dst_name = "dns"
 
     def gen(self):
-        self.graph_meta_qtype("-%s.png")
+        self.graph_meta_qtype("qtype-%s.png")
 
     def graph_meta_qtype(self, *args):
         values = (
@@ -21,5 +21,4 @@ class DNS(MetaPluginSum):
             ('SRV', 'C23939', 'dns_qtype-SRV.rrd', "value"),
             ('TXT', '65929F', 'dns_qtype-TXT.rrd', "value"),
         )
-
-        return super(CPU, self).graph_meta(values, *args)
+        return super(DNS, self).graph_meta(values, *args)
