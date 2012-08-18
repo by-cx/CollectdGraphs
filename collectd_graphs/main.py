@@ -6,6 +6,7 @@ import re
 config = {
     "data_dir": "/var/lib/collectd/rrd/",
     "graphs_dir": "/var/www/graphs/",
+    "conf_path": "/var/lib/collectd_graphs/conf.json",
 }
 
 config_for_update = {}
@@ -16,6 +17,27 @@ if config_for_update:
     config.update(config_for_update)
 # Ugly hack for rrdtool
 for cfg in config: config[cfg] = str(config[cfg])
+
+class JSONConf(object):
+    def __init__(self, path):
+        self.path = path
+        self.data = None
+        self._load()
+
+    def _load(self):
+        with open(self.path) as f:
+            self.data = json.load(f)
+
+    def _save(self):
+        with open(self.path, "w") as f:
+            json.dump(self.data, f)
+
+    def get(self, name):
+        return self.data.get(name)
+
+    def set(self, name, value):
+        self.data[name] = value
+        self._save()
 
 
 def get_plugins_list():
@@ -36,7 +58,6 @@ def tmp_graph(machine, plugin_name, x, y, filename):
                 True
             )
             plugin.gen()
-            print plugin.images.keys()
             return plugin.images[filename]
 
 def gen_graphs(fmachine="", fplugin=""):
