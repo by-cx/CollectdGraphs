@@ -1,6 +1,6 @@
 from bottle import route, run, template, static_file, TEMPLATE_PATH, redirect, response
 
-from main import gen_graphs, config, get_plugins_list, tmp_graph, JSONConf
+from main import gen_graphs, config, get_plugins_list, tmp_graph#, JSONConf
 import sys
 
 from os.path import join, abspath, pardir, dirname
@@ -23,12 +23,14 @@ def plugin_tmp(machine, plugin, x, y, filename):
 @route('/plugin/:machine/:plugin/:time')
 def plugin(machine, plugin, time):
     plugin_graphs = gen_graphs(machine, plugin)[machine][plugin][time]
+    graphs = get_plugins_list()
     return template(
         'plugin',
         data=plugin_graphs,
         machine=machine,
         plugin=plugin,
         time=time,
+        plugins=graphs[machine],
     )
 
 @route("/static/<path:path>")

@@ -83,9 +83,15 @@ class Plugin(object):
         rrd_path = os.path.join(self.data_dir, source)
         graph_path = os.path.join(self.dst_dir, dst)
 
+        try:
+            title = os.path.basename(graph_path % "|").split("-|")[0]
+        except IndexError:
+            title = ""
+
         parms_common = [
             '--start','{START}', '--end', '-1',
             '--width','{x}', '--height', '{y}',
+            '--title', title,
         ]
         for name, time_range in self.time_ranges():
             if not self.tmp:
