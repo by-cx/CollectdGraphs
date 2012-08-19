@@ -125,6 +125,7 @@ class MetaPluginSum(Plugin):
 
         # remove missing database from values
         missing = []
+	values = list(values)
         for name, color, rrd, value in values:
             if not os.path.isfile(os.path.join(self.data_dir, rrd)):
                 missing.append((name, color, rrd, value))
@@ -166,6 +167,15 @@ class MetaPluginLine(MetaPluginSum):
             ('name', 'color', 'rrd_path', 'value')
         """
         parms = []
+
+        # remove missing database from values
+        missing = []
+	values = list(values)
+        for name, color, rrd, value in values:
+            if not os.path.isfile(os.path.join(self.data_dir, rrd)):
+                missing.append((name, color, rrd, value))
+        for value in missing:
+            values.remove(value)
         
         for name, color, rrd, value in values:
             parms.append('DEF:%s_min=%s:%s:AVERAGE' % (name, os.path.join(self.data_dir, rrd), value))
