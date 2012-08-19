@@ -95,7 +95,8 @@ class ApacheScoreboard(MetaPluginSum):
     def gen(self):
         for filename in os.listdir(self._data_dir):
             if re.match("apache-[a-z0-9\-_]{1,32}", filename):
-                self.graph_meta_scoreboard(filename  + "scoreboard-%s.png")
+                self.plugin_directory = filename
+                self.graph_meta_scoreboard(filename  + "-scoreboard-%s.png")
 
     def graph_meta_scoreboard(self, *args):
         values = (
