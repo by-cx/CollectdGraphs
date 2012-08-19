@@ -3,7 +3,7 @@ import os
 import re
 
 class Apache(Plugin):
-    plugin_directory = "apache"
+    plugin_directory = "apache-[a-z0-9\-_]{1,32}"
     dst_name = "apache"
 
     def gen(self):
@@ -89,7 +89,7 @@ class Apache(Plugin):
         self.gen_graph(parms, *args)
 
 class ApacheScoreboard(MetaPluginSum):
-    plugin_directory = "apache"
+    plugin_directory = "apache-[a-z0-9\-_]{1,32}"
     dst_name = "apache"
 
     def gen(self):
