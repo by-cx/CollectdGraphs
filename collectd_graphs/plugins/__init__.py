@@ -12,6 +12,7 @@ from swap import SwapIO
 from users import Users
 from snmp import Snmp
 from dns import DNS
+from apache import Apache, ApacheScoreboard
 
 plugins_list = (
     CPU,
@@ -28,4 +29,6 @@ plugins_list = (
     Users,
     Snmp,
     DNS,
+    Apache,
+    ApacheScoreboard,
 )
