@@ -13,6 +13,7 @@ from users import Users
 from snmp import Snmp
 from dns import DNS
 from apache import Apache, ApacheScoreboard
+from hddtemp import HDDTemp
 
 plugins_list = (
     CPU,
@@ -31,4 +32,5 @@ plugins_list = (
     DNS,
     Apache,
     ApacheScoreboard,
+    HDDTemp,
 )
