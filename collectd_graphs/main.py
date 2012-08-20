@@ -18,6 +18,9 @@ if config_for_update:
 # Ugly hack for rrdtool
 for cfg in config: config[cfg] = str(config[cfg])
 
+if not os.path.isdir(config["graphs_dir"]):
+    os.makedirs(config["graphs_dir"])
+
 class JSONConf(object):
     def __init__(self, path):
         self.path = path
