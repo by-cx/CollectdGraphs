@@ -9,16 +9,16 @@ class IRQ(Plugin):
 
     def graph(self, *args):
         parms = [
-                '-v', 'Issues/s',
-                'DEF:avg={file}:value:AVERAGE',
-                'DEF:min={file}:value:MIN',
-                'DEF:max={file}:value:MAX',
-                "AREA:max#$HalfBlue",
-                "AREA:min#$Canvas",
-                "LINE1:avg#$FullBlue:Issues/s",
-                'GPRINT:min:MIN:%6.2lf Min,',
-                'GPRINT:avg:AVERAGE:%6.2lf Avg,',
-                'GPRINT:max:MAX:%6.2lf Max,',
-                'GPRINT:avg:LAST:%6.2lf Last\l',
+            '-v', 'Issues/s',
+            'DEF:avg={file}:value:AVERAGE',
+            'DEF:min={file}:value:MIN',
+            'DEF:max={file}:value:MAX',
+            'AREA:max#$HalfBlue',
+            'AREA:min#$Canvas',
+            'LINE1:avg#$FullBlue:Issues/s',
+            'GPRINT:min:MIN:%6.2lf Min,',
+            'GPRINT:avg:AVERAGE:%6.2lf Avg,',
+            'GPRINT:max:MAX:%6.2lf Max,',
+            'GPRINT:avg:LAST:%6.2lf Last\l',
         ]
         self.gen_graph(parms, *args)
