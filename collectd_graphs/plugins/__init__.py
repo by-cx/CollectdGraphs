@@ -14,6 +14,7 @@ from snmp import Snmp
 from dns import DNS
 from apache import Apache, ApacheScoreboard
 from hddtemp import HDDTemp
+from irq import IRQ
 
 plugins_list = (
     CPU,
@@ -33,4 +34,5 @@ plugins_list = (
     Apache,
     ApacheScoreboard,
     HDDTemp,
+    IRQ,
 )
