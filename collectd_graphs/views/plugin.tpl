@@ -33,7 +33,7 @@
                 %end
                 </div>
 
-                %for graph in data:
+                %for graph in sorted(data):
                     <p><img src="/static/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
                 %end
 

@@ -6,7 +6,7 @@ class HDDTemp(Plugin):
 
     def gen(self):
         for splited, source, dst in self.scan_for_files():
-            if splited[0] == "hddtemp":
+            if splited[0] == "temperature":
                 self.graph(source, dst)
 
     def graph(self, *args):
