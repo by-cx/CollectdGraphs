@@ -1,3 +1,5 @@
+import re
+import os
 from plugin import Plugin
 
 class IRQ(Plugin):
@@ -5,7 +7,9 @@ class IRQ(Plugin):
     dst_name = "irq"
 
     def gen(self):
-        self.graph("irq.rrd", self.dst_name + "-%s.png")
+        for filename in os.listdir(self.data_dir):
+            if re.match("irq-[0-9]{1,6}.rrd", filename):
+                self.graph(filename, filename.replace(".rrd", "-%s.png"))
 
     def graph(self, *args):
         parms = [
