@@ -1,11 +1,13 @@
 from bottle import route, run, template, static_file, TEMPLATE_PATH, redirect, response
 
-from main import gen_graphs, config, get_plugins_list, tmp_graph
+from main import gen_graphs, config, get_plugins_list, tmp_graph#, JSONConf
 import sys
 
 from os.path import join, abspath, pardir, dirname
 ROOT = abspath(join(dirname(__file__), pardir, "collectd_graphs", "views"))
 TEMPLATE_PATH.append(ROOT)
+
+#conf = JSONConf(config["conf_path"])
 
 @route('/')
 def index(name=''):
@@ -28,12 +30,14 @@ def plugin(machine, plugin, time):
     else:
         selected_time = "day"
     plugin_graphs = gen_graphs(machine, plugin, time)[machine][plugin][selected_time]
+    graphs = get_plugins_list()
     return template(
         'plugin',
         data=plugin_graphs,
         machine=machine,
         plugin=plugin,
         time=time,
+        plugins=graphs[machine],
     )
 
 @route("/static/<path:path>")

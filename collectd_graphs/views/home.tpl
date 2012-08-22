@@ -19,11 +19,13 @@
         
         <div data-role="content">
         <h2>Machines</h2>
-            %for x in data:
+            %for x in sorted(data):
             <p><a href="#{{ x }}" data-role="button">{{ x }}</a></p>
             %end
         </div> 
-        <div data-role="footer"><h2>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h2></div> 
+        <div data-role="footer">
+            <h4>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h4>
+        </div> 
     </div> 
 
     %for machine in data:
@@ -35,7 +37,7 @@
         </div>
         <div data-role="content">
         <h2>Plugins on {{ machine }}</h2>
-            %for plugin in data[machine]:
+            %for plugin in sorted(data[machine]):
                 <strong>{{ plugin }}</strong><br>
                 <div data-role="controlgroup" data-type="horizontal">
                 %for time in ("day", "week", "month", "three-months", "six-months", "year"):
@@ -44,7 +46,9 @@
                 </div>
             %end
         </div> 
-        <div data-role="footer"><h2>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h2></div> 
+        <div data-role="footer">
+            <h4>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h4>
+        </div> 
     </div> 
     %end
     

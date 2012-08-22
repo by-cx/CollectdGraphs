@@ -100,9 +100,15 @@ class Plugin(object):
         rrd_path = os.path.join(self.data_dir, source)
         graph_path = os.path.join(self.dst_dir, dst)
 
+        try:
+            title = os.path.basename(graph_path % "|").split("-|")[0]
+        except IndexError:
+            title = ""
+
         parms_common = [
             '--start','{START}', '--end', '-1',
             '--width','{x}', '--height', '{y}',
+            '--title', title,
         ]
         for name, time_range in self.time_ranges():
             if not self.tmp:
@@ -121,7 +127,6 @@ class Plugin(object):
                 f.close()
                 self.graphs.append(dst % name)
 
-
 class MetaPluginSum(Plugin):
     def gen(self):
         self.graph_meta(self.dst_name + "-%s.png")
@@ -134,6 +139,15 @@ class MetaPluginSum(Plugin):
             ('name', 'color', 'rrd_path', 'value')
         """
         parms = []
+
+        # remove missing database from values
+        missing = []
+	values = list(values)
+        for name, color, rrd, value in values:
+            if not os.path.isfile(os.path.join(self.data_dir, rrd)):
+                missing.append((name, color, rrd, value))
+        for value in missing:
+            values.remove(value)
 
         for name, color, rrd, value in values:
             parms.append('DEF:%s_min=%s:%s:AVERAGE' % (name, os.path.join(self.data_dir, rrd), value))
@@ -170,6 +184,15 @@ class MetaPluginLine(MetaPluginSum):
             ('name', 'color', 'rrd_path', 'value')
         """
         parms = []
+
+        # remove missing database from values
+        missing = []
+	values = list(values)
+        for name, color, rrd, value in values:
+            if not os.path.isfile(os.path.join(self.data_dir, rrd)):
+                missing.append((name, color, rrd, value))
+        for value in missing:
+            values.remove(value)
         
         for name, color, rrd, value in values:
             parms.append('DEF:%s_min=%s:%s:AVERAGE' % (name, os.path.join(self.data_dir, rrd), value))

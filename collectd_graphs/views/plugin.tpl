@@ -13,22 +13,34 @@
 
     <div data-role="page"> 
         <div data-role="header">
-            <a href="/#{{ machine }}" data-role="button">Plugins list</a>
+            <a href="/#{{ machine }}" data-role="button" rel="external">Plugins list</a>
             <h1>{{ plugin }} on {{ machine }}</h1>
-            <a href="/all" data-role="button" rel="external">Regenerate all graphs</a>
+            <a href="/" data-role="button" rel="external">Machines list</a>
         </div>
         <div data-role="content">
-        %for graph in data:
-            <p><strong>{{ graph }}</strong></p>
-            <div data-role="controlgroup" data-type="horizontal">
-                %for time in ("day", "week", "month", "three-months", "six-months", "year"):
-                    <a href="/plugin/{{ machine }}/{{ plugin }}/{{ time }}" data-role="button">{{ time }}</a>
+
+                <h3>Intervals</h3>
+                <div data-role="controlgroup" data-type="horizontal">
+                    %for listed_time in ("day", "week", "month", "three-months", "six-months", "year"):
+                        <a href="/plugin/{{ machine }}/{{ plugin }}/{{ listed_time }}" data-role="button">{{ listed_time }}</a>
+                    %end
+                </div>
+
+                <div data-role="controlgroup" data-type="horizontal">
+                <h3>Plugins</h3>
+                %for listed_plugin in sorted(plugins):
+                    <a href="/plugin/{{ machine }}/{{ listed_plugin }}/{{ time }}" data-role="button">{{ listed_plugin }}</a>
                 %end
                 </div>
-            <p><img src="/static/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
-        %end
+
+                %for graph in sorted(data):
+                    <p><img src="/static/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
+                %end
+
         </div>
-        <div data-role="footer"><h2>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h2></div> 
+        <div data-role="footer">
+            <h4>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h4>
+        </div> 
     </div> 
 
 </body>
