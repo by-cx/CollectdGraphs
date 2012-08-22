@@ -43,7 +43,7 @@ def tmp_graph(machine, plugin_name, x, y, filename):
             print plugin.images.keys()
             return plugin.images[filename]
 
-def gen_graphs(fmachine="", fplugin=""):
+def gen_graphs(fmachine="", fplugin="", ftime=""):
     data = {}
     for machine in os.listdir(config["data_dir"]):
         if fmachine and fmachine != machine: continue
@@ -57,6 +57,8 @@ def gen_graphs(fmachine="", fplugin=""):
                         os.path.join(config["data_dir"], machine),
                         os.path.join(config["graphs_dir"], machine),
                     )
+                    if ftime:
+                        plugin.set_time(ftime)
                     plugin.gen()
                     if plugin.graphs:
                         for filename in plugin.graphs:

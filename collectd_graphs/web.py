@@ -20,7 +20,14 @@ def plugin_tmp(machine, plugin, x, y, filename):
 
 @route('/plugin/:machine/:plugin/:time')
 def plugin(machine, plugin, time):
-    plugin_graphs = gen_graphs(machine, plugin)[machine][plugin][time]
+    time_ranges = ("day", "week", "month", "three-months", "six-months", "year")
+    if time and time not in time_ranges:
+        selected_time = "custom"
+    elif time and time in time_ranges:
+        selected_time = time
+    else:
+        selected_time = "day"
+    plugin_graphs = gen_graphs(machine, plugin, time)[machine][plugin][selected_time]
     return template(
         'plugin',
         data=plugin_graphs,

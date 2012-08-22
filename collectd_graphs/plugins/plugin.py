@@ -4,7 +4,7 @@ import rrdtool
 import tempfile
 
 class Plugin(object):
-    def __init__(self, data_dir, dst_dir, size=(400, 120), tmp=False):
+    def __init__(self, data_dir, dst_dir, size=(400, 120), tmp=False, time=""):
         """
             Basic class for plugin_directory
 
@@ -19,7 +19,11 @@ class Plugin(object):
         self.tmp = tmp
         self.graphs = []
         self.images = {}
+        self.time = time
         #self.gen() # must be definen in derived class
+
+    def set_time(self, time):
+        self.time = time
 
     def is_data(self):
         for directory in os.listdir(self._data_dir):
@@ -39,7 +43,7 @@ class Plugin(object):
         return directory
 
     def time_ranges(self):
-        return (
+        data = (
             ("day", "-1d"),
             ("week", "-1w"),
             ("month", "-4w"),
@@ -47,7 +51,14 @@ class Plugin(object):
             ("six-months", "-24w"),
             ("year", "-1y"),
         )
-
+        if self.time in ("day", "week", "month", "three-months", "six-months", "year"):
+            for x in data:
+                if x[0] == self.time:
+                    return (x,)
+        elif self.time:
+            return (("custom", self.time(":")[0], self.time.split(":")[1]),)
+        else:
+            return data
 
     def convert(self, parms, path, end):
         """Convert variables in parameters
