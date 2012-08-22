@@ -44,23 +44,23 @@ class Plugin(object):
 
     def time_ranges(self):
         data = (
-            ("day", "-1d"),
-            ("week", "-1w"),
-            ("month", "-4w"),
-            ("three-months", "-12w"),
-            ("six-months", "-24w"),
-            ("year", "-1y"),
+            ("day", "-1d", "-1"),
+            ("week", "-1w", "-1"),
+            ("month", "-4w", "-1"),
+            ("three-months", "-12w", "-1"),
+            ("six-months", "-24w", "-1"),
+            ("year", "-1y", "-1"),
         )
         if self.time in ("day", "week", "month", "three-months", "six-months", "year"):
             for x in data:
                 if x[0] == self.time:
                     return (x,)
         elif self.time:
-            return (("custom", self.time(":")[0], self.time.split(":")[1]),)
+            return (("custom", self.time.split(":")[0], self.time.split(":")[1]),)
         else:
             return data
 
-    def convert(self, parms, path, end):
+    def convert(self, parms, path, start, end):
         """Convert variables in parameters
         """
         def convert_map(parm):
@@ -81,7 +81,8 @@ class Plugin(object):
             parm = parm.replace("$HalfYellow", "F3DFB7")
             parm = parm.replace("$HalfCyan", "B7DFF7")
             parm = parm.replace("$HalfMagenta", "DFB7F7")
-            parm = parm.replace("{START}", end)
+            parm = parm.replace("{END}", end)
+            parm = parm.replace("{START}", start)
             return parm
         return map(convert_map, parms)
 
@@ -106,22 +107,22 @@ class Plugin(object):
             title = ""
 
         parms_common = [
-            '--start','{START}', '--end', '-1',
+            '--start','{START}', '--end', '{END}',
             '--width','{x}', '--height', '{y}',
             '--title', title,
         ]
-        for name, time_range in self.time_ranges():
+        for name, time_range_start, time_range_end in self.time_ranges():
             if not self.tmp:
                 rrdtool.graph(
                    graph_path % name,
-                   self.convert(parms_common + parms, rrd_path, time_range)
+                   self.convert(parms_common + parms, rrd_path, time_range_start, time_range_end)
                 )
                 self.graphs.append(dst % name)
             else:
                 f = tempfile.NamedTemporaryFile()
                 rrdtool.graph(
                    f.name,
-                   self.convert(parms_common + parms, rrd_path, time_range)
+                   self.convert(parms_common + parms, rrd_path, time_range_start, time_range_end)
                 )
                 self.images[os.path.basename(graph_path % name)] = f.read()
                 f.close()
