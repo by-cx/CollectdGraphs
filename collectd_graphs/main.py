@@ -51,7 +51,7 @@ def get_plugins_list():
                 os.path.join(config["data_dir"], machine),
                 os.path.join(config["graphs_dir"], machine),
             )
-            if plugin.is_data():
+            if plugin.is_data() and plugin.dst_name not in data[machine]:
                 data[machine].append(plugin.dst_name)
     return data
 
