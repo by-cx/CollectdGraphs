@@ -21,6 +21,12 @@ class Plugin(object):
         self.images = {}
         #self.gen() # must be definen in derived class
 
+    def is_data(self):
+        for directory in os.listdir(self._data_dir):
+            if re.match("^%s$" % self.plugin_directory, directory):
+                return True
+        return False
+
     @property
     def data_dir(self):
         return os.path.join(self._data_dir, self.plugin_directory)

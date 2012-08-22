@@ -17,13 +17,17 @@ if config_for_update:
 # Ugly hack for rrdtool
 for cfg in config: config[cfg] = str(config[cfg])
 
-
 def get_plugins_list():
     data = {}
-    for machine in os.listdir(config["graphs_dir"]):
+    for machine in os.listdir(config["data_dir"]):
         data[machine] = []
-        for plugin in os.listdir(os.path.join(config["graphs_dir"], machine)):
-            data[machine].append(plugin)
+        for Plugin in plugins.plugins_list:
+            plugin = Plugin(
+                os.path.join(config["data_dir"], machine),
+                os.path.join(config["graphs_dir"], machine),
+            )
+            if plugin.is_data():
+                data[machine].append(plugin.dst_name)
     return data
 
 def tmp_graph(machine, plugin_name, x, y, filename):
