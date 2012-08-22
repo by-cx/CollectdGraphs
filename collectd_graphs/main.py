@@ -44,6 +44,7 @@ def tmp_graph(machine, plugin_name, x, y, filename):
             return plugin.images[filename]
 
 def gen_graphs(fmachine="", fplugin="", ftime=""):
+    time_ranges = ("day", "week", "month", "three-months", "six-months", "year")
     data = {}
     for machine in os.listdir(config["data_dir"]):
         if fmachine and fmachine != machine: continue
@@ -59,12 +60,16 @@ def gen_graphs(fmachine="", fplugin="", ftime=""):
                     )
                     if ftime:
                         plugin.set_time(ftime)
+                        if ftime not in time_ranges:
+                            time_selected = "custom"
+                        else:
+                            time_selected = ftime
                     plugin.gen()
                     if plugin.graphs:
                         for filename in plugin.graphs:
                             for time in data[machine][Plugin.dst_name]:
                                 if re.search("-%s.png$" % time, filename):
-                                    data[machine][Plugin.dst_name][time].append(filename)
+                                    data[machine][Plugin.dst_name][time_selected].append(filename)
                                     break
                     break
     return data
