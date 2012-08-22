@@ -80,6 +80,10 @@ class Interface(Plugin):
             'GPRINT:out_avg:LAST:%5.1lf%s Last',
             'GPRINT:out_avg_sum:LAST:(ca. %5.1lf%sB Total)\l',
             "LINE1:inc_avg#$FullBlue:Incoming",
+            'GPRINT:inc_avg:AVERAGE:%5.1lf%s Avg,',
+            'GPRINT:inc_max:MAX:%5.1lf%s Max,',
+            'GPRINT:inc_avg:LAST:%5.1lf%s Last',
+            'GPRINT:inc_avg_sum:LAST:(ca. %5.1lf%sB Total)\l',
         ]
         self.gen_graph(parms, *args)
 
