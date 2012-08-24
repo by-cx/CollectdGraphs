@@ -13,7 +13,7 @@ class Conntrack(Plugin):
             'DEF:entries_avg={file}:entropy:AVERAGE',
             'DEF:entries_min={file}:entropy:MIN',
             'DEF:entries_max={file}:entropy:MAX',
-            "AREA:entries_max#$HalfGreen",
+            "AREA:entries_max#$HalfRed",
             "AREA:entries_min#$Canvas",
             "LINE1:entries_avg#$FullGreen: Entries",
             'GPRINT:entries_min:MIN:%4.2lf Min,',
