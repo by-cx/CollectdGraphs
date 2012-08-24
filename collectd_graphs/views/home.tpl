@@ -14,7 +14,6 @@
     <div data-role="page" id="home"> 
         <div data-role="header">
             <h1>Collectd statictics</h1>
-            <a href="/all" data-role="button" rel="external">Regenerate all graphs</a>
         </div>
         
         <div data-role="content">
