@@ -53,8 +53,9 @@ def plugin(machine, plugin, time):
         plugins=graphs[machine],
     )
 
-@route("/graph/<path:path>")
+@route("/static/<path:path>")
 def get_file(path):
+    print ROOT_STATIC
     return static_file(path, root=ROOT_STATIC)
 
 @route("/graph/<path:path>")

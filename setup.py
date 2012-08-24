@@ -22,6 +22,7 @@ setup(
     ],
     data_files=[
         ("collectd_graphs/views", ("collectd_graphs/views/home.tpl", "collectd_graphs/views/plugin.tpl"), ),
+        ("collectd_graphs/static", ("collectd_graphs/static/keyvalue.js", ), ),
     ],
     install_requires=[
         #"termcolor",

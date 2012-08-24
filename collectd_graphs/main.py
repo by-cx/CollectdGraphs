@@ -75,7 +75,7 @@ def gen_graphs(fmachine="", fplugin="", ftime=""):
         data[machine] = {}
         for Plugin in plugins.plugins_list:
             if fplugin and fplugin != Plugin.dst_name: continue
-            if not Plugin.dst_name in data[machine]: data[machine][Plugin.dst_name] = {"day": [], "week": [], "month": [], "three-months": [], "six-months": [], "year": []}
+            if not Plugin.dst_name in data[machine]: data[machine][Plugin.dst_name] = {"day": [], "week": [], "month": [], "three-months": [], "six-months": [], "year": [], "custom": []}
             for path in os.listdir(os.path.join(config["data_dir"], machine)):
                 if re.match("^%s$" % Plugin.plugin_directory, path):
                     plugin = Plugin(
@@ -93,7 +93,7 @@ def gen_graphs(fmachine="", fplugin="", ftime=""):
                         for filename in plugin.graphs:
                             for time in data[machine][Plugin.dst_name]:
                                 if re.search("-%s.png$" % time, filename):
-                                    data[machine][Plugin.dst_name][time_selected].append(filename)
+                                    data[machine][Plugin.dst_name][time].append(filename)
                                     break
                     break
     return data

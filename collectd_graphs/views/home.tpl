@@ -32,7 +32,6 @@
         <div data-role="header">
             <a href="#home" data-role="button">Home</a>
             <h1>Plugins on {{ machine }}</h1>
-            <a href="/all" data-role="button" rel="external">Regenerate all graphs</a>
         </div>
         <div data-role="content">
         <h2>Plugins on {{ machine }}</h2>
