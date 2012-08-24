@@ -64,7 +64,7 @@ class Plugin(object):
         """Convert variables in parameters
         """
         def convert_map(parm):
-            parm = parm.replace("{file}", path)
+            parm = parm.replace("{file}", path.replace(":", "\\:"))
             parm = parm.replace("{x}", "%d" % self.size[0])
             parm = parm.replace("{y}", "%d" % self.size[1])
             parm = parm.replace("$Canvas", "FFFFFF")
