@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
-    
+    <script src="/static/keyvalue.js"></script>
 </head>
 <body>
-
     <div data-role="page"> 
         <div data-role="header">
             <a href="/#{{ machine }}" data-role="button" rel="external">Plugins list</a>
@@ -34,7 +33,7 @@
                 </div>
 
                 %for graph in sorted(data):
-                    <p><img src="/static/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
+                    <p><img src="/graph/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></p>
                 %end
 
         </div>

@@ -1,13 +1,26 @@
-from bottle import route, run, template, static_file, TEMPLATE_PATH, redirect, response
+from bottle import route, run, template, static_file, TEMPLATE_PATH, redirect, response, request
 
-from main import gen_graphs, config, get_plugins_list, tmp_graph#, JSONConf
+from main import gen_graphs, config, get_plugins_list, tmp_graph, JSONConf
 import sys
 
 from os.path import join, abspath, pardir, dirname
-ROOT = abspath(join(dirname(__file__), pardir, "collectd_graphs", "views"))
-TEMPLATE_PATH.append(ROOT)
+ROOT_TMPL = abspath(join(dirname(__file__), pardir, "collectd_graphs", "views"))
+TEMPLATE_PATH.append(ROOT_TMPL)
+ROOT_STATIC = abspath(join(dirname(__file__), pardir, "collectd_graphs", "static"))
 
-#conf = JSONConf(config["conf_path"])
+conf = JSONConf(config["conf_path"])
+
+@route('/key/set')
+def set_key():
+    key = request.forms.get('key')
+    value = request.forms.get('value')
+    conf.set(key, value)
+    return {"status": "ok"}
+
+@route('/key/get')
+def get_key(key):
+    key = request.forms.get('key')
+    return {"status": "ok", "data": conf.get(key)}
 
 @route('/')
 def index(name=''):
@@ -40,7 +53,11 @@ def plugin(machine, plugin, time):
         plugins=graphs[machine],
     )
 
-@route("/static/<path:path>")
+@route("/graph/<path:path>")
+def get_file(path):
+    return static_file(path, root=ROOT_STATIC)
+
+@route("/graph/<path:path>")
 def callback(path):
     return static_file(path, root=config["graphs_dir"])
 
