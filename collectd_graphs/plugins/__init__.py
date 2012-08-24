@@ -15,6 +15,7 @@ from dns import DNS
 from apache import Apache, ApacheScoreboard
 from hddtemp import HDDTemp
 from irq import IRQ
+from conntrack import Conntrack
 
 plugins_list = (
     CPU,
@@ -35,4 +36,5 @@ plugins_list = (
     ApacheScoreboard,
     HDDTemp,
     IRQ,
+    Conntrack,
 )
