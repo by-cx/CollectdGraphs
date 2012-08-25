@@ -17,10 +17,14 @@
         </div>
         
         <div data-role="content">
-        <h2>Machines</h2>
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">Comparator</li>
+            <li><a href="/">Test 1</a></li>
+            <li data-role="list-divider">Machines</li>
             %for x in sorted(data):
-            <p><a href="#{{ x }}" data-role="button">{{ x }}</a></p>
+            <li><a href="#{{ x }}">{{ x }}</a></li>
             %end
+        </ul>
         </div> 
         <div data-role="footer">
             <h4>Developed by <a href="mailto:cx@initd.cz">Adam Štrauch</a> for <a href="http://best-hosting.cz">BEST-HOSTING</a></h4>
