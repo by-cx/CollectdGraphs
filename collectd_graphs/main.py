@@ -21,6 +21,14 @@ for cfg in config: config[cfg] = str(config[cfg])
 if not os.path.isdir(config["graphs_dir"]):
     os.makedirs(config["graphs_dir"])
 
+# check conf_path existence
+if not os.path.isdir(os.path.dirname(config["conf_path"])):
+    os.makedirs(os.path.dirname(config["conf_path"]))
+if not os.path.isfile(config["conf_path"]):
+    with open(config["conf_path"], "w") as f:
+        f.write("{}\n")
+
+
 class JSONConf(object):
     def __init__(self, path):
         self.path = path
