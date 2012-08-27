@@ -43,8 +43,8 @@ class JSONConf(object):
         with open(self.path, "w") as f:
             json.dump(self.data, f)
 
-    def get(self, name):
-        return self.data.get(name)
+    def get(self, name, default=None):
+        return self.data.get(name, default)
 
     def set(self, name, value):
         self.data[name] = value

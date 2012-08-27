@@ -18,14 +18,44 @@ def set_key():
     return {"status": "ok"}
 
 @route('/key/get')
-def get_key(key):
+def get_key(key, default=None):
     key = request.forms.get('key')
-    return {"status": "ok", "data": conf.get(key)}
+    return {"status": "ok", "data": conf.get(key, default)}
 
 @route('/')
 def index(name=''):
     graphs = get_plugins_list()
     return template('home', data=graphs)
+
+@route('/comparator/delete/:comparator/:machine/:plugin/:graph')
+def delete_from_comparator(comparator, machine, plugin, graph):
+    comparators = conf.get("comparators", {})
+    if comparator in comparators:
+        comparators[comparator].remove((machine, plugin, graph))
+        conf.set("comparators", comparators)
+        return "ok"
+    return "Error: comparator doesn't exists"
+
+@route('/comparator/add/:comparator/:machine/:plugin/:graph')
+def add_to_comparator(comparator, machine, plugin, graph):
+    comparators = conf.get("comparators", {})
+    if comparator in comparators and (machine, plugin, graph) not in comparators[comparator]:
+        comparators[comparator].append((machine, plugin, graph))
+    else:
+        comparators[comparator] = [(machine, plugin, graph)]
+    conf.set("comparators", comparators)
+    return "ok"
+
+@route('/comparator/choose/:machine/:plugin/:graph')
+def choose_comparator(machine, plugin, graph):
+    comparators = conf.get("comparators", [])
+    return template(
+        'comparator_chooser',
+        comparators = comparators,
+        machine = machine,
+        plugin = plugin,
+        graph = graph,
+    )
 
 # for example: http://localhost:8080/plugin_tmp/web/load/600/120/load-day.png
 @route('/plugin_tmp/:machine/:plugin/:x/:y/:filename')
