@@ -33,7 +33,7 @@
                 </div>
 
                 %for graph in sorted(data):
-                    <p><a href="/comparator/choose/{{ machine }}/{{ plugin }}/{{ graph }}" data-role="button" data-inline="true" data-rel="dialog" data-transition="pop"><img src="/graph/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></a></p>
+                    <p><a href="/comparator/choose/{{ machine }}/{{ plugin }}/{{ time }}/{{ graph }}" data-role="button" data-inline="true" data-rel="dialog" data-transition="pop"><img src="/graph/{{ machine }}/{{ plugin }}/{{ graph }}" alt="{{ graph }}"></a></p>
                 %end
 
         </div>

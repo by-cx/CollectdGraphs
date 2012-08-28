@@ -15,20 +15,18 @@
     
         <div data-role="header" data-theme="d">
             <h1>Add to comparator</h1>
-
         </div>
 
         <script type="text/javascript">
         function new_comparator() {
             var comparator = $("#comparator").val();
-            url = "/comparator/add/"+ comparator +"/{{ machine }}/{{ plugin }}/{{ graph }}";
-            $("#new_comparators").append(
-                $("a").attr("href", url)
+            url = "/comparator/add/"+ comparator +"/{{ machine }}/{{ plugin }}/{{ time }}/{{ graph }}";
+            $("a").attr("href", url)
                 .attr("data-role", "button")
                 .attr("data-rel", "back")
                 .attr("data-theme", "c")
-                .html(comparator);
-            );
+                .html(comparator).button().click();
+            //$("#new_comparators").append(link);
             $("#comparator").val("");
         }
         </script>
@@ -36,11 +34,13 @@
         <div data-role="content" data-theme="c">
             <h1>New comparator</h1>
             <input type="text" data-mini="true" id="comparator">
-            <a href="#a" onclick="new_comparator()" data-role="button" data-rel="back" data-theme="b">Create new one</a>
+            <button onclick="new_comparator()" data-rel="back" data-role="button" data-theme="b">Create new one</button>
             <h1>Choose existing comparator</h1>
             <span id="new_comparators"></span>
-            <a href="/comparator/add/Comp1/{{ machine }}/{{ plugin }}/{{ graph }}" data-role="button" data-rel="back" data-theme="c">Comp1</a>
-            <a href="#" data-role="button" data-rel="back" data-theme="b">Cancel</a>    
+            %for comparator in comparators:
+            <a href="/comparator/add/{{ comparator }}/{{ machine }}/{{ plugin }}/{{ time }}/{{ graph }}" data-role="button" data-rel="back" data-theme="c">{{ comparator }}</a>
+            %end
+            <a href="#" data-role="button" data-rel="back" data-theme="b">Cancel</a>
         </div>
     </div>
 

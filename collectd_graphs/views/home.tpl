@@ -18,8 +18,12 @@
         
         <div data-role="content">
         <ul data-role="listview" data-inset="true">
+            %if comparators:
             <li data-role="list-divider">Comparator</li>
-            <li><a href="/">Test 1</a></li>
+            %for comparator in comparators:
+                <li><a href="/comparator/show/{{ comparator }}">{{ comparator }}</a></li>
+            %end
+            %end
             <li data-role="list-divider">Machines</li>
             %for x in sorted(data):
             <li><a href="#{{ x }}">{{ x }}</a></li>

@@ -25,35 +25,46 @@ def get_key(key, default=None):
 @route('/')
 def index(name=''):
     graphs = get_plugins_list()
-    return template('home', data=graphs)
+    comparators = conf.get("comparators", {})
+    return template('home', data=graphs, comparators=comparators)
 
-@route('/comparator/delete/:comparator/:machine/:plugin/:graph')
-def delete_from_comparator(comparator, machine, plugin, graph):
+@route('/comparator/show/:comparator')
+def comparator(comparator):
+    comparators = conf.get("comparators", {})
+    return template('comparator', comparator=comparator, graphs=comparators[comparator])
+
+@route('/comparator/delete/:comparator/:machine/:plugin/:time/:graph')
+def delete_from_comparator(comparator, machine, plugin, time, graph):
     comparators = conf.get("comparators", {})
     if comparator in comparators:
-        comparators[comparator].remove((machine, plugin, graph))
+        comparators[comparator].remove([machine, plugin, time, graph])
+        if not comparators[comparator]:
+            comparators.pop(comparator)
+            redirect("/", 307)
+        redirect("/comparator/show/%s" % comparator, 307)
         conf.set("comparators", comparators)
         return "ok"
     return "Error: comparator doesn't exists"
 
-@route('/comparator/add/:comparator/:machine/:plugin/:graph')
-def add_to_comparator(comparator, machine, plugin, graph):
+@route('/comparator/add/:comparator/:machine/:plugin/:time/:graph')
+def add_to_comparator(comparator, machine, plugin, time, graph):
     comparators = conf.get("comparators", {})
-    if comparator in comparators and (machine, plugin, graph) not in comparators[comparator]:
-        comparators[comparator].append((machine, plugin, graph))
+    if comparator in comparators and (machine, plugin, time, graph) not in comparators[comparator]:
+        comparators[comparator].append((machine, plugin, time, graph))
     else:
-        comparators[comparator] = [(machine, plugin, graph)]
+        comparators[comparator] = [(machine, plugin, time, graph)]
     conf.set("comparators", comparators)
     return "ok"
 
-@route('/comparator/choose/:machine/:plugin/:graph')
-def choose_comparator(machine, plugin, graph):
+@route('/comparator/choose/:machine/:plugin/:time/:graph')
+def choose_comparator(machine, plugin, time, graph):
     comparators = conf.get("comparators", [])
     return template(
         'comparator_chooser',
         comparators = comparators,
         machine = machine,
         plugin = plugin,
+        time = time,
         graph = graph,
     )
 
