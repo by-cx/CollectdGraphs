@@ -19,7 +19,7 @@
         <div data-role="content">
         <ul data-role="listview" data-inset="true">
             %if comparators:
-            <li data-role="list-divider">Comparator</li>
+            <li data-role="list-divider">Comparators</li>
             %for comparator in comparators:
                 <li><a href="/comparator/show/{{ comparator }}">{{ comparator }}</a></li>
             %end

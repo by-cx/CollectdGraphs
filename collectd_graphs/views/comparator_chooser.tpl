@@ -21,6 +21,7 @@
         function new_comparator() {
             var comparator = $("#comparator").val();
             url = "/comparator/add/"+ comparator +"/{{ machine }}/{{ plugin }}/{{ time }}/{{ graph }}";
+            $.get(url);
             $("a").attr("href", url)
                 .attr("data-role", "button")
                 .attr("data-rel", "back")
@@ -28,6 +29,16 @@
                 .html(comparator).button().click();
             //$("#new_comparators").append(link);
             $("#comparator").val("");
+        }
+        function add_to_comparator(comparator) {
+            url = "/comparator/add/"+ comparator +"/{{ machine }}/{{ plugin }}/{{ time }}/{{ graph }}";
+            alert(url);
+            $.get(url);
+            $("a").attr("href", url)
+                .attr("data-role", "button")
+                .attr("data-rel", "back")
+                .attr("data-theme", "c")
+                .button().click();
         }
         </script>
 
@@ -38,7 +49,7 @@
             <h1>Choose existing comparator</h1>
             <span id="new_comparators"></span>
             %for comparator in comparators:
-            <a href="/comparator/add/{{ comparator }}/{{ machine }}/{{ plugin }}/{{ time }}/{{ graph }}" data-role="button" data-rel="back" data-theme="c">{{ comparator }}</a>
+            <button onclick="add_to_comparator('{{ comparator }}')" data-role="button" data-rel="back" data-theme="c">{{ comparator }}</button>
             %end
             <a href="#" data-role="button" data-rel="back" data-theme="b">Cancel</a>
         </div>

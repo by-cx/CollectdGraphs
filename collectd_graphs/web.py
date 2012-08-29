@@ -10,6 +10,7 @@ ROOT_STATIC = abspath(join(dirname(__file__), pardir, "collectd_graphs", "static
 
 conf = JSONConf(config["conf_path"])
 
+
 @route('/key/set')
 def set_key():
     key = request.forms.get('key')
@@ -17,10 +18,12 @@ def set_key():
     conf.set(key, value)
     return {"status": "ok"}
 
+
 @route('/key/get')
 def get_key(key, default=None):
     key = request.forms.get('key')
     return {"status": "ok", "data": conf.get(key, default)}
+
 
 @route('/')
 def index(name=''):
@@ -28,15 +31,24 @@ def index(name=''):
     comparators = conf.get("comparators", {})
     return template('home', data=graphs, comparators=comparators)
 
+
 @route('/comparator/show/:comparator')
 def comparator(comparator):
     comparators = conf.get("comparators", {})
+    used = []
+    for machine, plugin, time, graph in comparators[comparator]:
+        if not (machine, plugin, time) in used:
+            used.append((machine, plugin, time))
+    for machine, plugin, time in used:
+        gen_graphs(machine, plugin, time)
     return template('comparator', comparator=comparator, graphs=comparators[comparator])
+
 
 @route('/comparator/delete/:comparator/:machine/:plugin/:time/:graph')
 def delete_from_comparator(comparator, machine, plugin, time, graph):
     comparators = conf.get("comparators", {})
     if comparator in comparators:
+        print comparator, [machine, plugin, time, graph]
         comparators[comparator].remove([machine, plugin, time, graph])
         if not comparators[comparator]:
             comparators.pop(comparator)
@@ -45,6 +57,7 @@ def delete_from_comparator(comparator, machine, plugin, time, graph):
         conf.set("comparators", comparators)
         return "ok"
     return "Error: comparator doesn't exists"
+
 
 @route('/comparator/add/:comparator/:machine/:plugin/:time/:graph')
 def add_to_comparator(comparator, machine, plugin, time, graph):
@@ -56,23 +69,26 @@ def add_to_comparator(comparator, machine, plugin, time, graph):
     conf.set("comparators", comparators)
     return "ok"
 
+
 @route('/comparator/choose/:machine/:plugin/:time/:graph')
 def choose_comparator(machine, plugin, time, graph):
     comparators = conf.get("comparators", [])
     return template(
         'comparator_chooser',
-        comparators = comparators,
-        machine = machine,
-        plugin = plugin,
-        time = time,
-        graph = graph,
+        comparators=comparators,
+        machine=machine,
+        plugin=plugin,
+        time=time,
+        graph=graph,
     )
+
 
 # for example: http://localhost:8080/plugin_tmp/web/load/600/120/load-day.png
 @route('/plugin_tmp/:machine/:plugin/:x/:y/:filename')
 def plugin_tmp(machine, plugin, x, y, filename):
     response.content_type = "image/png"
     return tmp_graph(machine, plugin, int(x), int(y), filename)
+
 
 @route('/plugin/:machine/:plugin/:time')
 def plugin(machine, plugin, time):
@@ -94,18 +110,22 @@ def plugin(machine, plugin, time):
         plugins=graphs[machine],
     )
 
+
 @route("/static/<path:path>")
 def get_file(path):
     return static_file(path, root=ROOT_STATIC)
+
 
 @route("/graph/<path:path>")
 def callback(path):
     return static_file(path, root=config["graphs_dir"])
 
+
 @route('/all')
 def gen_all():
     gen_graphs()
     redirect("/", 307)
+
 
 def main():
     #needs more love
