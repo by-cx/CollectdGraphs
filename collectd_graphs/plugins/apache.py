@@ -2,6 +2,7 @@ from plugin import Plugin, MetaPluginSum
 import os
 import re
 
+
 class Apache(Plugin):
     plugin_directory = "apache-[a-z0-9\-_]{1,32}"
     dst_name = "apache"
@@ -14,7 +15,6 @@ class Apache(Plugin):
                 self.graph_connections("apache_connections.rrd", filename + "-connections-%s.png")
                 self.graph_idle_workers("apache_idle_workers.rrd", filename + "-idle_workers-%s.png")
                 self.graph_requests("apache_requests.rrd", filename + "-requests-%s.png")
-
 
     def graph_bytes(self, *args):
         parms = [
@@ -88,6 +88,7 @@ class Apache(Plugin):
         ]
         self.gen_graph(parms, *args)
 
+
 class ApacheScoreboard(MetaPluginSum):
     plugin_directory = "apache-[a-z0-9\-_]{1,32}"
     dst_name = "apache"
@@ -96,7 +97,7 @@ class ApacheScoreboard(MetaPluginSum):
         for filename in os.listdir(self._data_dir):
             if re.match("apache-[a-z0-9\-_]{1,32}", filename):
                 self.plugin_directory = filename
-                self.graph_meta_scoreboard(filename  + "-scoreboard-%s.png")
+                self.graph_meta_scoreboard(filename + "-scoreboard-%s.png")
 
     def graph_meta_scoreboard(self, *args):
         values = (

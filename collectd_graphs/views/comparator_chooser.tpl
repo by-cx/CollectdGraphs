@@ -32,7 +32,6 @@
         }
         function add_to_comparator(comparator) {
             url = "/comparator/add/"+ comparator +"/{{ machine }}/{{ plugin }}/{{ time }}/{{ graph }}";
-            alert(url);
             $.get(url);
             $("a").attr("href", url)
                 .attr("data-role", "button")
